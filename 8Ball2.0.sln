@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "8Ball2.0", "8Ball2.0\8Ball2.0.vcxproj", "{9993C3A8-C43B-4F2A-BC88-7615C4701A1B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ED915509-3D1B-4B56-957D-0DE1B27CED18}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9993C3A8-C43B-4F2A-BC88-7615C4701A1B}.Debug|x64.ActiveCfg = Debug|x64
+		{9993C3A8-C43B-4F2A-BC88-7615C4701A1B}.Debug|x64.Build.0 = Debug|x64
+		{9993C3A8-C43B-4F2A-BC88-7615C4701A1B}.Debug|x86.ActiveCfg = Debug|Win32
+		{9993C3A8-C43B-4F2A-BC88-7615C4701A1B}.Debug|x86.Build.0 = Debug|Win32
+		{9993C3A8-C43B-4F2A-BC88-7615C4701A1B}.Release|x64.ActiveCfg = Release|x64
+		{9993C3A8-C43B-4F2A-BC88-7615C4701A1B}.Release|x64.Build.0 = Release|x64
+		{9993C3A8-C43B-4F2A-BC88-7615C4701A1B}.Release|x86.ActiveCfg = Release|Win32
+		{9993C3A8-C43B-4F2A-BC88-7615C4701A1B}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B761DEA9-20C8-4BD1-94DB-03F12FE4F4B2}
+	EndGlobalSection
+EndGlobal
