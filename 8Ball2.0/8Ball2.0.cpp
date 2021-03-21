@@ -1,6 +1,8 @@
 #include <time.h>
 #include <stdlib.h>  
 #include <stdio.h>
+#include <time.h>
+#include <string.h>
 
 // The following will give us the randomized classic 8 Ball response
 const char* GetClassicAnswer(int index)
@@ -76,22 +78,28 @@ int main()
     // Seed the srand function with the current time
     // If we don't do this, we will get the same random numbers
     // each run
-    srand(time(NULL));
 
-    char answer;
-    printf("\nWould you like to play? Enter Y or N: \n");
-    scanf(" %c", &answer);
+    // Initialize stuff
+    time_t rawtime;
+    srand(time(&rawtime));
 
-    if (answer == 'N' || answer == 'n')
-    {
-        printf("Goodbye!\n");
-        exit(1);
+    bool done = false;
+    char* answer = new char[1024];
+
+    while (!done) {
+        // Ask user for a question, or let them exit
+        printf("Hello User, what is it you seek the answer to? (Type 'N' to exit)\n");
+        fgets(answer, 1024, stdin);
+
+        if ((answer[0] == 'N' || answer[0] == 'n') && answer[1] == '\n')
+        {
+            done = true;
+            continue; // skip rest of loop
+        }
+        printf("%s\n", GetClassicAnswer(RandomInteger(20)));
+        answer[0] = '\0'; // clear the string
     }
-    printf("Welcome!\n");
 
-    printf("Hello User, what is it you seek the answer to? (Max 1024 characters)\n"); // prompt user for question
-    char* userQuestion = new char[256];
-    scanf("%s", userQuestion);
-    // printf("%s\n", GetClassicAnswer(20));
-    printf("%s\n", GetClassicAnswer(RandomInteger(20)));
+    printf("Goodbye!\n");
+    exit(1);
 }
