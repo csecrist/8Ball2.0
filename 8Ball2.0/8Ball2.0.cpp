@@ -4,13 +4,16 @@
 #include <time.h>
 #include <string.h>
 
+char* returnLine(int);
+
 struct QAS
 {
-    char Question[1024];
-    char Answer[1024];
-} current, previous;
+    char * Question; 
+    char * Answer;
+} current;
 
-// The following will give us the randomized classic 8 Ball response
+// The following will give us the randomized classic 8 Ball response.
+// DEPRECATED
 const char* GetClassicAnswer(int index)
 {
     switch (index) {
@@ -62,8 +65,9 @@ const char* GetClassicAnswer(int index)
 
 //Generates a random number between 0 and max
 /// </summary>
-/// <param name="max">Maximum random integer</param>
-/// <returns>Random integer</returns>
+/// <param name="max"> Maximum random integer </param>
+/// <returns> Random integer </returns>
+/// 
 int RandomInteger(int max)
 {
     unsigned int
@@ -79,6 +83,57 @@ int RandomInteger(int max)
     return x / bin_size;
 }
 
+
+char* returnLine(int linenumber) {
+
+    if (linenumber == 0) {
+        linenumber++;
+    }
+    // Open/Read answer text file 
+    FILE* fp;
+
+    char c;
+
+    fp = fopen("Answers.txt", "r");
+
+    int currentlinenumber = 0;
+    char currentlinetxt[1024];
+    int cLineCharIdx = 0;
+
+    // while not eof, read character
+    // if charater is not new line, add to current string
+    // if character is new line, increment line number
+    // check if we have found out line
+    // if we have, print out the line
+
+    while (1) {
+        c = fgetc(fp); // character
+        if (c == EOF) { // check for eof / foundline
+            break;
+        }
+
+        if (c == '\n') {
+            // we found new line.
+            currentlinetxt[cLineCharIdx] = '\0';
+            currentlinenumber++; // increment lines
+            cLineCharIdx = 0; // update index
+            if (currentlinenumber == linenumber) { // found our line?
+                //print out new line, break
+                fclose(fp);
+                return currentlinetxt;
+            }
+            memset(currentlinetxt, 0, sizeof currentlinetxt);
+            continue;
+        }
+        // copy character to our char array
+        currentlinetxt[cLineCharIdx] = c;
+        cLineCharIdx++;
+    }
+    fclose(fp);
+}
+    
+
+
 int main()
 {
     // Seed the srand function with the current time
@@ -90,41 +145,34 @@ int main()
     srand(time(&rawtime));
 
     bool done = false;
-    char* answer = new char[1024];
-
-    strcpy_s(current.Answer, "\0");
-    strcpy_s(current.Question, "\0");
+    char* userQuestion = new char[1024];
 
     while (!done) {
         // Ask user for a question, or let them exit
         printf("Hello User, what is it you seek the answer to? (Type 'N' to exit or 'H' for more options)\n");
-        fgets(answer, 1024, stdin);
+        fgets(userQuestion, 1024, stdin);
 
-        if ((answer[0] == 'N' || answer[0] == 'n') && answer[1] == '\n')
+        if ((userQuestion[0] == 'N' || userQuestion[0] == 'n') && userQuestion[1] == '\n')
         {
             done = true;
             continue; // skip rest of loop
         }
-        if ((answer[0] == 'H' || answer[0] == 'h') && answer[1] == '\n') 
+        if ((userQuestion[0] == 'H' || userQuestion[0] == 'h') && userQuestion[1] == '\n') 
         {
             printf("Type P to view previous round\n");
             continue;
         }
-        if ((answer[0] == 'P' || answer[0] == 'p') && answer[1] == '\n') {
+        if ((userQuestion[0] == 'P' || userQuestion[0] == 'p') && userQuestion[1] == '\n') {
             printf("Previous Question: %s", current.Question);
             printf("Previous Answer: %s\n\n", current.Answer);
             continue;
         }
 
-        strcpy_s(previous.Question, "\0");
-        strcpy_s(previous.Answer, "\0");
-        strcpy_s(previous.Question, current.Question);
-        strcpy_s(previous.Answer, current.Answer);
-        strcpy_s(current.Question, answer);
-        strcpy_s(current.Answer, GetClassicAnswer(RandomInteger(20)));
+        current.Question = userQuestion;
+        current.Answer = returnLine(RandomInteger(20));
 
         printf("%s\n\n", current.Answer);
-        answer[0] = '\0'; // clear the string
+        userQuestion[0] = '\0'; // clear the string
     }
 
 
