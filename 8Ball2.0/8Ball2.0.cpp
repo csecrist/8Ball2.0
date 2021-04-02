@@ -4,6 +4,12 @@
 #include <time.h>
 #include <string.h>
 
+struct QAS
+{
+    char Question[1024];
+    char Answer[1024];
+} current, previous;
+
 // The following will give us the randomized classic 8 Ball response
 const char* GetClassicAnswer(int index)
 {
@@ -86,9 +92,12 @@ int main()
     bool done = false;
     char* answer = new char[1024];
 
+    strcpy_s(current.Answer, "\0");
+    strcpy_s(current.Question, "\0");
+
     while (!done) {
         // Ask user for a question, or let them exit
-        printf("Hello User, what is it you seek the answer to? (Type 'N' to exit)\n");
+        printf("Hello User, what is it you seek the answer to? (Type 'N' to exit or 'H' for more options)\n");
         fgets(answer, 1024, stdin);
 
         if ((answer[0] == 'N' || answer[0] == 'n') && answer[1] == '\n')
@@ -96,10 +105,31 @@ int main()
             done = true;
             continue; // skip rest of loop
         }
-        printf("%s\n", GetClassicAnswer(RandomInteger(20)));
+        if ((answer[0] == 'H' || answer[0] == 'h') && answer[1] == '\n') 
+        {
+            printf("Type P to view previous round\n");
+            continue;
+        }
+        if ((answer[0] == 'P' || answer[0] == 'p') && answer[1] == '\n') {
+            printf("Previous Question: %s", current.Question);
+            printf("Previous Answer: %s\n\n", current.Answer);
+            continue;
+        }
+
+        strcpy_s(previous.Question, "\0");
+        strcpy_s(previous.Answer, "\0");
+        strcpy_s(previous.Question, current.Question);
+        strcpy_s(previous.Answer, current.Answer);
+        strcpy_s(current.Question, answer);
+        strcpy_s(current.Answer, GetClassicAnswer(RandomInteger(20)));
+
+        printf("%s\n\n", current.Answer);
         answer[0] = '\0'; // clear the string
     }
 
+
+
     printf("Goodbye!\n");
     exit(1);
-}
+
+ }
